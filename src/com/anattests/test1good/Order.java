@@ -40,4 +40,17 @@ public class Order {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+    // check the order can be processed
+    public void validate() {
+        if (items == null || items.isEmpty()) {
+            throw new InvalidOrderException("no items");
+        }
+        if (customer == null) {
+            throw new InvalidOrderException("no customer");
+        }
+        if (customer.getEmail().equals("") || !customer.getEmail().contains("@")) {
+            throw new InvalidOrderException("bad email");
+        }
+    }
 }

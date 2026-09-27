@@ -40,41 +40,43 @@ class OrderManagerTest {
 
     // --- validation ---
 
-    @Test
-    void nullOrderReturnsMinusOne() {
-        assertEquals(-1, process(null), DELTA);
+    private void assertInvalid(Order o, String expectedMessage) {
+        InvalidOrderException e = assertThrows(InvalidOrderException.class, () -> process(o));
+        assertEquals(expectedMessage, e.getMessage());
     }
 
     @Test
-    void nullItemsReturnsMinusOne() {
-        Order o = new Order(1L, null, customer("REGULAR", "IL"));
-        assertEquals(-1, process(o), DELTA);
+    void nullOrderThrows() {
+        assertInvalid(null, "null order");
     }
 
     @Test
-    void emptyItemsReturnsMinusOne() {
-        Order o = new Order(1L, new ArrayList<>(), customer("REGULAR", "IL"));
-        assertEquals(-1, process(o), DELTA);
+    void nullItemsThrows() {
+        assertInvalid(new Order(1L, null, customer("REGULAR", "IL")), "no items");
     }
 
     @Test
-    void nullCustomerReturnsMinusOne() {
-        Order o = new Order(1L, List.of(new Item("a", 10, 1)), null);
-        assertEquals(-1, process(o), DELTA);
+    void emptyItemsThrows() {
+        assertInvalid(new Order(1L, new ArrayList<>(), customer("REGULAR", "IL")), "no items");
     }
 
     @Test
-    void emptyEmailReturnsMinusOne() {
+    void nullCustomerThrows() {
+        assertInvalid(new Order(1L, List.of(new Item("a", 10, 1)), null), "no customer");
+    }
+
+    @Test
+    void emptyEmailThrows() {
         Customer c = customer("REGULAR", "IL");
         c.setEmail("");
-        assertEquals(-1, process(order(c, new Item("a", 10, 1))), DELTA);
+        assertInvalid(order(c, new Item("a", 10, 1)), "bad email");
     }
 
     @Test
-    void emailWithoutAtSignReturnsMinusOne() {
+    void emailWithoutAtSignThrows() {
         Customer c = customer("REGULAR", "IL");
         c.setEmail("john.example.com");
-        assertEquals(-1, process(order(c, new Item("a", 10, 1))), DELTA);
+        assertInvalid(order(c, new Item("a", 10, 1)), "bad email");
     }
 
     // --- subtotal ---

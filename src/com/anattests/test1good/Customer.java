@@ -1,16 +1,18 @@
 package com.anattests.test1good;
 
+import com.anattests.test1good.customertype.CustomerType;
+
 public class Customer {
 
     private String name;
     private String email;
-    private String type; // REGULAR, GOLD, EMPLOYEE, VIP
+    private CustomerType type;
     private Address address;
 
     public Customer() {
     }
 
-    public Customer(String name, String email, String type, Address address) {
+    public Customer(String name, String email, CustomerType type, Address address) {
         this.name = name;
         this.email = email;
         this.type = type;
@@ -33,11 +35,11 @@ public class Customer {
         this.email = email;
     }
 
-    public String getType() {
+    public CustomerType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(CustomerType type) {
         this.type = type;
     }
 

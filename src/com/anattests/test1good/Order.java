@@ -1,6 +1,5 @@
 package com.anattests.test1good;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class Order {
@@ -65,26 +64,10 @@ public class Order {
         }
 
         // discounts
-        if (customer.getType().equals("REGULAR")) {
-            if (t > 100) t = t * 0.95;
-        } else if (customer.getType().equals("GOLD")) {
-            t = t * 0.9;
-            if (LocalDate.now().getDayOfWeek().getValue() == 5) t = t * 0.97; // friday
-        } else if (customer.getType().equals("EMPLOYEE")) {
-            t = t * 0.7;
-        } else if (customer.getType().equals("VIP")) {
-            t = t * 0.85;
-            if (t > 1000) t = t - 50;
-        }
+        t = customer.getType().applyDiscount(t);
 
         // tax
-        if (customer.getAddress().getCountry().getCode().equals("IL")) {
-            t = t * 1.17;
-        } else if (customer.getAddress().getCountry().getCode().equals("US")) {
-            t = t * 1.08;
-        } else {
-            t = t * 1.2;
-        }
+        t = customer.getAddress().getCountry().applyTax(t);
 
         return t;
     }

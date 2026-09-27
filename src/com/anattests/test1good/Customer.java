@@ -2,6 +2,8 @@ package com.anattests.test1good;
 
 import com.anattests.test1good.customertype.CustomerType;
 
+import java.util.Objects;
+
 public class Customer {
 
     private String name;
@@ -9,13 +11,10 @@ public class Customer {
     private CustomerType type;
     private Address address;
 
-    public Customer() {
-    }
-
     public Customer(String name, String email, CustomerType type, Address address) {
         this.name = name;
         this.email = email;
-        this.type = type;
+        this.type = Objects.requireNonNull(type, "type");
         this.address = address;
     }
 
@@ -40,7 +39,7 @@ public class Customer {
     }
 
     public void setType(CustomerType type) {
-        this.type = type;
+        this.type = Objects.requireNonNull(type, "type");
     }
 
     public Address getAddress() {

@@ -20,34 +20,7 @@ public class OrderManager {
         }
         o.validate();
 
-        double t = 0;
-
-        // calc total
-        for (Item i : o.getItems()) {
-            t = t + i.getPrice() * i.getQty();
-        }
-
-        // discounts
-        if (o.getCustomer().getType().equals("REGULAR")) {
-            if (t > 100) t = t * 0.95;
-        } else if (o.getCustomer().getType().equals("GOLD")) {
-            t = t * 0.9;
-            if (LocalDate.now().getDayOfWeek().getValue() == 5) t = t * 0.97; // friday
-        } else if (o.getCustomer().getType().equals("EMPLOYEE")) {
-            t = t * 0.7;
-        } else if (o.getCustomer().getType().equals("VIP")) {
-            t = t * 0.85;
-            if (t > 1000) t = t - 50;
-        }
-
-        // tax
-        if (o.getCustomer().getAddress().getCountry().getCode().equals("IL")) {
-            t = t * 1.17;
-        } else if (o.getCustomer().getAddress().getCountry().getCode().equals("US")) {
-            t = t * 1.08;
-        } else {
-            t = t * 1.2;
-        }
+        double t = o.calculateTotal();
 
         // save to db
         if (!isTest) {
